@@ -19,6 +19,10 @@ config/name="Cubes"
 run/main_scene="res://scenes/TestScene.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+DrawLine3D="*res://scripts/DrawLine3D.gd"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
