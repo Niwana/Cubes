@@ -16,12 +16,8 @@ _global_script_class_icons={
 [application]
 
 config/name="Cubes"
-run/main_scene="res://scenes/MainScene.tscn"
+run/main_scene="res://scenes/Martin.tscn"
 config/icon="res://icon.png"
-
-[autoload]
-
-DrawLine3D="*res://scripts/DrawLine3D.gd"
 
 [input]
 

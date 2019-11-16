@@ -1,6 +1,5 @@
 extends Camera
 
-var rot
 var ROTATESPEED = 0.1
 var MOVESPEED = 10
 var INITIALMOVESPEED
