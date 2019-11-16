@@ -6,7 +6,7 @@ onready var navigation : Navigation = get_node("../../Navigation")
 # var a = 2
 # var b = "text"
 
-var target = Vector3(30,10,30);
+var checkpoint = null
 
 var path = []
 
@@ -17,6 +17,7 @@ func _ready():
 	pass # Replace with function body..	
 	
 func update_path(target):
+	print("GETTING PATH")
 	path = navigation.get_simple_path(global_transform.origin, target)
 	
 func draw_path():
@@ -31,22 +32,47 @@ func draw_path():
 				last = p
 	
 func generate_target():
-	return Vector3((randi() % 100) - 50 , 0, (randi() % 100) - 50)
+	print("GENERATING TARGET")
+	var target = Vector3((randi() % 100) - 50 , 0, (randi() % 100) - 50)
+	return target
+	
+func get_next_checkpoint():
+	if(path.size() > 0):
+		checkpoint = path[0]
+		path.remove(0)
+	else:
+		checkpoint = null
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if(path.size() == 0):
 		update_path(generate_target());
-		draw_path();
+		get_next_checkpoint()
 		
-	counter = counter + delta
-	if(counter > 0.5):
-		counter = 0
-		if(path.size() > 0):
-			path.remove(0)
-		draw_path()
-	
-	#var basis = global_transform.basis.x
-	#add_central_force(basis*10);
-	#add_torque(Vector3(0,1,0));
+	draw_path();
+	print(checkpoint)
+	if(checkpoint != null):
+		var dist = (checkpoint - global_transform.origin)
+		if dist.length() > 4:
+			add_central_force(global_transform.basis.x * 20)
+		else:
+			get_next_checkpoint();
+		
+func look_follow(state, current_transform, target_position):
+	var up_dir = Vector3(0, 1, 0)
+	var cur_dir = current_transform.basis.xform(Vector3(1, 0, 0))
+	var target_dir = (target_position - current_transform.origin).normalized()
+	var rotation_angle = 0
+	if(target_dir.z < 0):
+		rotation_angle = acos(target_dir.x) - acos(cur_dir.x) 
+	else:
+		rotation_angle = acos(cur_dir.x) - acos(target_dir.x) 
+	var clamped_angle = clamp(rotation_angle, -0.05, 0.05)
+
+	state.set_angular_velocity(up_dir * (clamped_angle / state.get_step()))
+
+func _integrate_forces(state):
+	if(checkpoint != null):
+		var target_position = checkpoint
+		look_follow(state, get_global_transform(), target_position)
 	
