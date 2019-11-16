@@ -16,7 +16,7 @@ material = SubResource( 7 )
 [node name="Spatial" type="Spatial"]
 
 [node name="RigidBody" type="RigidBody" parent="."]
-transform = Transform( 0.999518, -0.0171501, 0.0258594, 0.0177731, 0.999553, -0.0240586, -0.0254352, 0.0245067, 0.999376, 0, 0, 0 )
+transform = Transform( 0.999515, -0.0177057, 0.0256251, 0.0183069, 0.999558, -0.0234215, -0.025199, 0.0238792, 0.999397, 0, 0, 0 )
 
 [node name="Box" type="MeshInstance" parent="RigidBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.37721, 0 )
